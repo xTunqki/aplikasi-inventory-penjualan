@@ -1,0 +1,12 @@
+{
+  "name": "backend-aplikasi-inventory-penjualan",
+  "version": "1.0.0",
+  "description": "Backend untuk aplikasi inventory penjualan - Rimba Test Dev",
+  "main": "index.js",
+  "author": "Tungki Reza Prasakti",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.32.0"
+  }
+}
