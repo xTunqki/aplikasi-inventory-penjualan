@@ -9,9 +9,9 @@ router.get("/", (req, res) => {
 
 
 router.post("/", (req, res) => {
-  let { nama, contact, email, alamat, diskon, tipe_diskon, ktp } = req.body;
+  let { nama_item, unit, stok, harga_satuan, barang } = req.body;
 
-  item.create({ nama, contact, email, alamat, diskon, tipe_diskon, ktp })
+  item.create({ nama_item, unit, stok, harga_satuan, barang })
     .then((newPost) => {
       res.status(201).json(newPost);
     })

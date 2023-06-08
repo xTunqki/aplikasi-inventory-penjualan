@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 // Load each controller
-const microPostsController = require("./microPosts.js");
 const customersController = require("./customer.js");
 const itemsController = require("./item.js");
 const salesController = require("./sales.js");
