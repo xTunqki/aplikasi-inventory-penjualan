@@ -20,8 +20,16 @@ export default createRouter({
       component: () => import("./views/Sales.vue"),
     },
     {
+        path: "/sales/new",
+        component: () => import("./views/sales/Add.vue"),
+    },
+    {
       path: "/customers",
       component: () => import("./views/Customer.vue"),
+    },
+    {
+        path: "/customers/new",
+        component: () => import("./views/customers/Add.vue"),
     },
   ],
 });

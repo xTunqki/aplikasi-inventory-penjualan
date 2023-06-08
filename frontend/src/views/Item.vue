@@ -21,7 +21,7 @@ const { data, error } = useSWR("http://localhost:8080/api/items", fetcher);
 <template>
   <div>
     <Navbar title="Items" backRoute="/" />
-    <div class="max-w-md mx-auto mt-8">
+    <div class="max-w-xl mx-auto mt-8">
       <div class="flex justify-between mb-4">
         <h2 class="text-lg font-bold">Data List</h2>
         <router-link to="/items/new">

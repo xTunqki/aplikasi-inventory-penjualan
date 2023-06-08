@@ -9,9 +9,9 @@ router.get("/", (req, res) => {
 
 
 router.post("/", (req, res) => {
-  let { nama, contact, email, alamat, diskon, tipe_diskon, ktp } = req.body;
+  let { code_transaksi, tanggal_transaksi, customer, item, qty, total_diskon, total_harga, total_bayar } = req.body;
 
-  sales.create({ nama, contact, email, alamat, diskon, tipe_diskon, ktp })
+  sales.create({ code_transaksi, tanggal_transaksi, customer, item, qty, total_diskon, total_harga, total_bayar })
     .then((newPost) => {
       res.status(201).json(newPost);
     })

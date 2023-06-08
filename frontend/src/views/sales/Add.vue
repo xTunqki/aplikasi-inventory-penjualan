@@ -1,85 +1,83 @@
 <template>
   <div>
-    <Navbar title="Add New Item" backRoute="/items" />
+    <Navbar title="Add New Sales" backRoute="/sales" />
     <div class="max-w-md mx-auto mt-12">
       <form @submit="handleSubmit">
-        <div class="mb-4">
-          <label
-            for="itemName"
-            class="block text-gray-700 text-sm font-bold mb-2"
-            >Item Name</label
-          >
-          <input
-            type="text"
-            id="itemName"
-            name="nama_item"
-            v-model="formData.nama_item"
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-          />
-        </div>
 
         <div class="flex mb-4">
           <div class="w-1/2 mr-2">
             <label
               for="stock"
               class="block text-gray-700 text-sm font-bold mb-2"
-              >Stock</label
+              >Kode Transaksi</label
             >
             <input
-              type="number"
-              id="stock"
-              name="stok"
-              v-model="formData.stok"
+              type="text"
+              id="code_transaksi"
+              name="code_transaksi"
+              v-model="formData.code_transaksi"
               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
           <div class="w-1/2 ml-2">
             <label
-              for="price"
+              for="tanggal_transaksi"
               class="block text-gray-700 text-sm font-bold mb-2"
-              >Price</label
+              >Tanggal Transaksi</label
             >
             <input
-              type="text"
-              id="price"
-              name="harga_satuan"
-              v-model="formData.harga_satuan"
+              type="date"
+              id="tanggal_transaksi"
+              name="tanggal_transaksi"
+              v-model="formData.tanggal_transaksi"
               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>
 
         <div class="mb-4">
-          <label for="image" class="block text-gray-700 text-sm font-bold mb-2"
-            >Image</label
+          <label
+            for="customer"
+            class="block text-gray-700 text-sm font-bold mb-2"
+            >Customer</label
           >
           <input
             type="text"
-            id="image"
-            name="barang"
-            v-model="formData.barang"
+            id="customer"
+            name="customer"
+            v-model="formData.customer"
             class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           />
         </div>
 
         <div class="mb-4">
-          <label for="unit" class="block text-gray-700 text-sm font-bold mb-2"
-            >Unit</label
+          <label for="item" class="block text-gray-700 text-sm font-bold mb-2"
+            >Item</label
           >
-          <select
-            id="unit"
-            name="unit"
-            v-model="formData.unit"
-            class="w-full border bg-white rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          <input
+            type="text"
+            id="item"
+            name="item"
+            v-model="formData.item"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="qty" class="block text-gray-700 text-sm font-bold mb-2"
+            >Quantity</label
           >
-            <option value="kg">Kilogram (Kg)</option>
-            <option value="pcs">Pieces (Pcs)</option>
-          </select>
+          <input
+            type="text"
+            id="qty"
+            name="qty"
+            v-model="formData.qty"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          />
         </div>
 
         <button
           type="submit"
-          ref="submit_btn"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Submit
@@ -99,23 +97,23 @@ export default {
   data() {
     return {
       formData: {
-        nama_item: "",
-        stok: null,
-        harga_satuan: null,
-        barang: "",
-        unit: "kg",
+        code_transaksi: "",
+        tanggal_transaksi: null,
+        customer: null,
+        item: "",
+        qty: "",
       },
     };
   },
   methods: {
     handleSubmit(e) {
-      this.$refs.submit_btn.setAttribute("disabled", "disabled");
       e.preventDefault();
 
-      const formDataToSubmit = { ...this.formData };
+      const formDataToSubmit = { ...this.formData, 
+        total_diskon: 10, total_harga: 10, total_bayar: 10 };
 
       // Perform the API call to post the data
-      fetch("http://localhost:8080/api/items", {
+      fetch("http://localhost:8080/api/sales", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,13 +122,12 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$router.push('/items');
+          this.$router.push('/sales');
           console.log("Data successfully submitted:", data);
           // Handle the success response here
         })
         .catch((error) => {
           console.error("Error submitting data:", error);
-          this.$refs.submit_btn.removeAttribute("disabled");
           // Handle the error here
         });
     },
