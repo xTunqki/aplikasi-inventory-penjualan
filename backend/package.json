@@ -1,13 +1,22 @@
 {
-  "name": "backend-aplikasi-inventory-penjualan",
-  "version": "1.0.0",
-  "description": "Backend untuk aplikasi inventory penjualan - Rimba Test Dev",
-  "main": "index.js",
-  "author": "Tungki Reza Prasakti",
-  "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.1.4",
     "express": "^4.18.2",
+    "morgan": "^1.10.0",
     "mysql2": "^3.3.3",
     "sequelize": "^6.32.0"
-  }
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "name": "backend-inventory-penjualan",
+  "version": "1.0.0",
+  "description": "Backend inventory Penjualan - Rimba Test Dev",
+  "main": "index.js",
+  "author": "Tungki Reza Prasakti",
+  "license": "MIT"
 }

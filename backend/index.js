@@ -1,111 +1,39 @@
-const Sequelize = require('sequelize');
+require ('dotenv').config();
+const express = require("express");
+const morgan = require("morgan");
+const path = require("path");
+const db = require("./models");
+const app = express();
+const PORT = process.env.PORT;
+const routes = require('./controllers')
 
-const sequelize = new Sequelize('hello_world', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: true
-});
+// this lets us parse 'application/json' content in http requests
+app.use(express.json());
 
+// add http request logging to help us debug and audit app use
+const logFormat = process.env.NODE_ENV === "production" ? "combined" : "dev";
+app.use(morgan(logFormat));
 
-const Item = sequelize.define('item', {
-  nama_item: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  unit: {
-    type: Sequelize.ENUM('kg', 'pcs'),
-    allowNull: false
-  },
-  stok: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
-  harga_satuan: {
-    type: Sequelize.DECIMAL(10, 2),
-    allowNull: false
-  },
-  barang: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-});
+// this mounts controllers/index.js at the route `/api`
+app.use("/api", routes);
 
+// for production use, we serve the static react build folder
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
 
-const Customer = sequelize.define('customer', {
-  nama: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  contact: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      isEmail: true
-    }
-  },
-  alamat: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  diskon: {
-    type: Sequelize.DECIMAL(10, 2),
-    allowNull: true
-  },
-  tipe_diskon: {
-    type: Sequelize.ENUM('persentase', 'fix diskon'),
-    allowNull: true
-  },
-  ktp: {
-    type: Sequelize.STRING,
-    allowNull: true
-  }
-});
-
-const Sales = sequelize.define('sales', {
-  code_transaksi: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  tanggal_transaksi: {
-    type: Sequelize.DATE,
-    allowNull: false
-  },
-  customer: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  item: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  qty: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
-  total_diskon: {
-    type: Sequelize.DECIMAL(10, 2),
-    allowNull: false
-  },
-  total_harga: {
-    type: Sequelize.DECIMAL(10, 2),
-    allowNull: false
-  },
-  total_bayar: {
-    type: Sequelize.DECIMAL(10, 2),
-    allowNull: false
-  }
-});
-
-// Sync all defined models to the database
-sequelize.sync({ force: false })
-  .then(() => {
-    console.log('All models were synchronized successfully.');
-  })
-  .catch((error) => {
-    console.error('Error occurred while synchronizing models:', error);
+  // all unknown routes should be handed to our react app
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
   });
+}
 
+// update DB tables based on model updates. Does not handle renaming tables/columns
+// NOTE: toggling this to true drops all tables (including data)
+db.sequelize.sync({ force: false });
+
+// start up the server
+if (PORT) {
+  app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+} else {
+  console.log("===== ERROR ====\nCREATE A .env FILE!\n===== /ERROR ====");
+}
