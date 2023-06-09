@@ -26,8 +26,9 @@
               >Stock</label
             >
             <input
-              type="number"
+              type="text"
               id="stock"
+              @input="validateStock"
               name="stok"
               v-model="formData.stok"
               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
@@ -51,10 +52,10 @@
 
         <div class="mb-4">
           <label for="image" class="block text-gray-700 text-sm font-bold mb-2"
-            >Image</label
+            >Image URL</label
           >
           <input
-            type="text"
+            type="input"
             id="image"
             name="barang"
             v-model="formData.barang"
@@ -102,12 +103,24 @@ export default {
         nama_item: "",
         stok: null,
         harga_satuan: null,
-        barang: "",
+        barang: null,
         unit: "kg",
       },
     };
   },
   methods: {
+    // uploadImage(e) {
+    //   const image = e.target.files[0];
+    //   const reader = new FileReader();
+    //   reader.readAsDataURL(image);
+    //   reader.onload = (e) => {
+    //     this.barang = e.target.result;
+    //   };
+    // },
+    validateStock() {
+      // Remove non-numeric characters from the qty field
+      this.formData.stok = this.formData.stok.replace(/\D/g, '');
+    },
     handleSubmit(e) {
       this.$refs.submit_btn.setAttribute("disabled", "disabled");
       e.preventDefault();
@@ -124,7 +137,7 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$router.push('/items');
+          this.$router.push("/items");
           console.log("Data successfully submitted:", data);
           // Handle the success response here
         })

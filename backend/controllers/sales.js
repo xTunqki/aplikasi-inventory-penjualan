@@ -1,10 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
-const { sales } = db;
+const { sales, customer, item } = db;
 
 router.get("/", (req, res) => {
-  sales.findAll({}).then((allPosts) => res.json(allPosts));
+  sales.findAll({
+    include: [
+      {
+        model: customer,
+        as: "customer_data",
+        attributes: ["nama"],
+      },
+      {
+        model: item,
+        as: "item_data",
+        attributes: ["nama_item"],
+      }
+    ],
+  }).then((allPosts) => res.json(allPosts));
 });
 
 

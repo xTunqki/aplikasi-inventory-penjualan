@@ -2,6 +2,17 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const { item } = db;
+const multer = require('multer');
+
+const upload = multer({storage: multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '../uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+})});
+
 
 router.get("/", (req, res) => {
   item.findAll({}).then((allPosts) => res.json(allPosts));

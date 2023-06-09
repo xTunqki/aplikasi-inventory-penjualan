@@ -98,7 +98,7 @@
 
         <div class="mb-4">
           <label for="ktp" class="block text-gray-700 text-sm font-bold mb-2"
-            >Image</label
+            >KTP Image URL</label
           >
           <input
             type="text"
@@ -111,6 +111,7 @@
 
         <button
           type="submit"
+          ref="submit_btn"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Submit
@@ -143,6 +144,7 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
+      this.$refs.submit_btn.setAttribute("disabled", "disabled");
 
       const formDataToSubmit = { ...this.formData };
 
@@ -162,6 +164,7 @@ export default {
         })
         .catch((error) => {
           console.error("Error submitting data:", error);
+          this.$refs.submit_btn.removeAttribute("disabled");
           // Handle the error here
         });
     },

@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       code_transaksi: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
       },
       tanggal_transaksi: {
@@ -15,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       customer: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       item: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       qty: {
@@ -47,6 +48,8 @@ module.exports = (sequelize, DataTypes) => {
 
   Sales.associate = (models) => {
     // associations can be defined here
+    Sales.belongsTo(models.customer, {  foreignKey: 'customer', as: 'customer_data' });
+    Sales.belongsTo(models.item, {  foreignKey: 'item', as: 'item_data' });
   };
 
   return Sales;

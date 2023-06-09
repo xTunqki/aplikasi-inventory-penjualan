@@ -50,8 +50,8 @@ const { data, error } = useSWR("http://localhost:8080/api/sales", fetcher);
           <tr class="bg-gray-100 text-center" v-for="arr in data" :key="arr.id">
             <td class="py-1 px-2">{{ arr.code_transaksi }}</td>
             <td class="py-1 px-2">{{ arr.tanggal_transaksi }}</td>
-            <td class="py-1 px-2">{{ arr.customer }}</td>
-            <td class="py-1 px-2">{{ arr.item }}</td>
+            <td class="py-1 px-2">{{ arr.customer_data.nama }}</td>
+            <td class="py-1 px-2">{{ arr.item_data.nama_item }}</td>
             <td class="py-1 px-2">{{ arr.qty }}</td>
             <td class="py-1 px-2">{{ arr.total_diskon }}</td>
             <td class="py-1 px-2">{{ arr.total_harga }}</td>
