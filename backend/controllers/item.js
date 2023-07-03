@@ -2,25 +2,25 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const { item } = db;
-const multer = require('multer');
-
-const upload = multer({storage: multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, '../uploads')
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname)
-  }
-})});
+const { upload } = require("./multer");
+const path = require('path');
 
 
+// Router get with images from uploads folder
 router.get("/", (req, res) => {
   item.findAll({}).then((allPosts) => res.json(allPosts));
 });
 
+router.get("/uploads/:filename", (req, res) => {
+  res.sendFile(path.join(__dirname, '../uploads/') + req.params.filename);
+});
+
+router.post('/upload', upload.single('gambar_barang'), (req, res) => {
+  res.json(req.file);
+});
 
 router.post("/", (req, res) => {
-  let { nama_item, unit, stok, harga_satuan, barang } = req.body;
+  let { nama_item, unit, stok, harga_satuan, barang} = req.body;
 
   item.create({ nama_item, unit, stok, harga_satuan, barang })
     .then((newPost) => {

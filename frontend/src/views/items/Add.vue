@@ -55,10 +55,10 @@
             >Image URL</label
           >
           <input
-            type="input"
-            id="image"
-            name="barang"
-            v-model="formData.barang"
+            type="file"
+            id="gambar_barang"
+            ref="gambar_barang"
+            name="gambar_barang"
             class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -92,6 +92,7 @@
 
 <script>
 import Navbar from "../../components/Navbar.vue";
+import axios from "axios";
 export default {
   name: "AddItem",
   components: {
@@ -121,14 +122,29 @@ export default {
       // Remove non-numeric characters from the qty field
       this.formData.stok = this.formData.stok.replace(/\D/g, '');
     },
-    handleSubmit(e) {
+    async handleSubmit(e) {
       this.$refs.submit_btn.setAttribute("disabled", "disabled");
       e.preventDefault();
 
       const formDataToSubmit = { ...this.formData };
 
+      const image = this.$refs.gambar_barang.files[0];
+      const formData = new FormData();
+      formData.append("gambar_barang", image);
+
+      await fetch('http://localhost:8080/api/items/upload', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          formDataToSubmit.barang = data.filename;
+        })
+        .catch(error => {
+          console.error(error)
+        });
       // Perform the API call to post the data
-      fetch("http://localhost:8080/api/items", {
+      await fetch("http://localhost:8080/api/items", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

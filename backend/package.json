@@ -17,7 +17,7 @@
   },
   "name": "backend-inventory-penjualan",
   "version": "1.0.0",
-  "description": "Backend inventory Penjualan - Rimba Test Dev",
+  "description": "Backend inventory Penjualan",
   "main": "index.js",
   "author": "Tungki Reza Prasakti",
   "license": "MIT"

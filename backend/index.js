@@ -8,7 +8,6 @@ const PORT = process.env.PORT;
 const routes = require('./controllers')
 const cors = require('cors')
 
-
 app.use(cors());
 // this lets us parse 'application/json' content in http requests
 app.use(express.json());
