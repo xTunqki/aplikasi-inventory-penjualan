@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const path = require("path");
 const db = require("./models");
 const app = express();
-const PORT = process.env.PORT;
+const {PORT} = process.env;
 const routes = require('./controllers')
 const cors = require('cors')
 

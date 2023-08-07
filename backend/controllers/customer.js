@@ -2,11 +2,19 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const { customer } = db;
+const { upload } = require('./multer');
 
 router.get("/", (req, res) => {
   customer.findAll({}).then((allPosts) => res.json(allPosts));
 });
 
+router.get('/uploads/:filename', (req, res) => {
+  res.sendFile(path.join(__dirname, '../uploads/') + req.params.filename)
+})
+
+router.post('/upload', upload.single('ktp'), (req,res) => {
+  res.json(req.file)
+})
 
 router.post("/", (req, res) => {
   let { nama, contact, email, alamat, diskon, tipe_diskon, ktp } = req.body;

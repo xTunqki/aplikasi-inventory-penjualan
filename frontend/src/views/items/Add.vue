@@ -92,7 +92,6 @@
 
 <script>
 import Navbar from "../../components/Navbar.vue";
-import axios from "axios";
 export default {
   name: "AddItem",
   components: {

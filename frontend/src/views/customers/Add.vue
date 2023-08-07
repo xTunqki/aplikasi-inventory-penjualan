@@ -87,10 +87,10 @@
             <select
             id="tipe_diskon"
             name="tipe_diskon"
-            v-model="formData.tipe_diskon"
+            @change="formData.tipe_diskon = $event.target.value"
             class="w-full border bg-white rounded px-2 py-1 focus:outline-none focus:border-blue-500"
           >
-            <option value="persentase">Persentase</option>
+            <option value="persentase" selected>Persentase</option>
             <option value="fix diskon">Fix Diskon</option>
           </select>
           </div>
@@ -101,10 +101,10 @@
             >KTP Image URL</label
           >
           <input
-            type="text"
+            type="file"
+            ref="ktp"
             id="ktp"
             name="ktp"
-            v-model="formData.ktp"
             class="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -136,20 +136,34 @@ export default {
         email: null,
         alamat: "",
         diskon: "",
-        tipe_diskon: "",
+        tipe_diskon: "persentase",
         ktp: "",
       },
     };
   },
   methods: {
-    handleSubmit(e) {
+    async handleSubmit(e) {
       e.preventDefault();
       this.$refs.submit_btn.setAttribute("disabled", "disabled");
 
       const formDataToSubmit = { ...this.formData };
+      const formData = new FormData();
+      const ktp = this.$refs.ktp.files[0];
+      formData.append("ktp", ktp);
+
+      await fetch("http://localhost:8080/api/customers/upload", {
+        method: "POST",
+        body: formData,
+      }).then((response) => response.json()).then((data) => {
+        console.log(data);
+        formDataToSubmit.ktp = data.filename;
+      }).catch(error=> {
+        console.error("Error uploading file:", error);
+        this.$refs.submit_btn.removeAttribute("disabled");
+      });
 
       // Perform the API call to post the data
-      fetch("http://localhost:8080/api/customers", {
+      await fetch("http://localhost:8080/api/customers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

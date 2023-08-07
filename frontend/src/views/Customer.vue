@@ -53,7 +53,7 @@ const { data, error } = useSWR("http://localhost:8080/api/customers", fetcher);
             <td class="py-1 px-2">{{ arr.alamat }}</td>
             <td class="py-1 px-2">{{ arr.diskon }}</td>
             <td class="py-1 px-2">{{ arr.tipe_diskon }}</td>
-            <td class="py-1 px-2 max-w-[5em]	max-h-[5em]"><img :src="arr.ktp"/></td>
+            <td class="py-1 px-2 max-w-[5em]	max-h-[5em]"><img :src="'http://localhost:8080/api/items/uploads/' + arr.ktp"/></td>
           </tr>
         </template>
         <tr class="bg-gray-100 text-center" v-else>
